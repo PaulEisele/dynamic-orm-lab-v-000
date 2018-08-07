@@ -10,24 +10,24 @@ class InteractiveRecord
     options.each do |property, value|
       self.send("#{{property}}=", value)
     end
-  end 
+  end
 
   def self.column_names
-    DB[:conn].results_as_hash = true 
+    DB[:conn].results_as_hash = true
     sql = "pragma table_info('#{table_name}')"
     table_info = DB[:conn].execute(sql)
     column_names = []
     table_info.each do |row|
       column_names << row["name"]
-    end 
+    end
     column_names.compact
-  end 
+  end
 
   def table_name_for_insert
 
   end
 
-  def col_names_for_insert 
+  def col_names_for_insert
 
   end
 
@@ -35,16 +35,17 @@ class InteractiveRecord
 
   end
 
-  def save 
-
-  end 
+  def save
+    sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
+    DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
+  end
 
   def self.find_by_name
 
   end
 
-  def self.find_by 
+  def self.find_by
 
-  end 
-  
+  end
+
 end
